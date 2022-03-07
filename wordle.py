@@ -19,7 +19,7 @@ def choose_secret(nombre_fichero):
     rand=random.randint(1,30)
     secret=lista[rand]
     return secret.upper()
-def compare_words(word, secret):
+def compare_words(p1, p2):
     """Dadas dos palabras en mayÃºsculas (word y secret), esta funciÃ³n calcula las posiciones de las letras de word que aparecen en la misma posiciÃ³n en secret, y las posiciones de las letras de word que aparecen en secret pero en una posiciÃ³n distinta.
     Args:
       word: Una palabra. Ej. "CAMPO"
@@ -28,21 +28,22 @@ def compare_words(word, secret):
       same_position: Lista de posiciones de word cuyas letras coinciden en la misma posiciÃ³n en secret. En el caso anterior: [0]
       same_letter: Lista de posiciones de word cuyas letras estÃ¡n en secret pero en posiciones distintas. En el caso anterior: [1,2]
     """
-    listaWord=[]
-    listaSecret=[]
+    listaP1=[]
+    listaP2=[]
     same_position=[]
     same_letter=[]
     for char in p1:
-      listaWord.append(char)
+      listaP1.append(char)
     for char in p2:
-      listaSecret.append(char)
-    for i in range(len(listaWord)):
-      if(listaWord[i]==listaSecret[i]):
+      listaP2.append(char)
+    for i in range(len(listaP1)):
+      if(listaP1[i]==listaP2[i]):
         same_position.append(i)
-    for i in range(len(listaWord)):
-      for j in range(len(listaSecret)):
-        if(listaWord[i]==listaSecret[j] and i not in same_position):
+    for i in range(len(listaP1)):
+      for j in range(len(listaP2)):
+        if(listaP1[i]==listaP2[j] and i not in same_position and j not in same_position):
           same_letter.append(i)
+    
     return same_position, same_letter
 def print_word(word, same_position, same_letter):
     """Dada una palabra, una lista same_position y otra lista same_letter, esta funciÃ³n crearÃ¡ un string donde aparezcan en mayÃºsculas las letras de la palabra que ocupen las posiciones de same_position, en minÃºsculas las letras de la palabra que ocupen las posiciones de same_letter y un guiÃ³n (-) en el resto de posiciones
@@ -96,24 +97,34 @@ def choose_secret_advanced(nombre_fichero):
     rndIndex=random.randint(0,15)
     secret=selected[rndIndex]
     return selected, secret.upper()
-def check_valid_word():
+def check_valid_word(selected):
     """Dada una lista de palabras, esta funciÃ³n pregunta al usuario que introduzca una palabra hasta que introduzca una que estÃ© en la lista. Esta palabra es la que devolverÃ¡ la funciÃ³n.
     Args:
       selected: Lista de palabras.
     Returns:
       word: Palabra introducida por el usuario que estÃ¡ en la lista.
     """
-
+    isSelected=False
+    while isSelected==False:
+      word = input("Introduce una nueva palabra: ")
+      for s in selected:
+        if s==word:
+          isSelected=True
+    return word
+"""
 if __name__ == "__main__":
-    secret=choose_secret("palabras_reduced.txt")
+    selected, secret=choose_secret_advanced("palabras_reduced.txt")
     print("Palabra a adivinar: "+secret)#Debug: esto es para que sepas la palabra que debes adivinar
     for repeticiones in range(0,6):
-        word = input("Introduce una nueva palabra: ")
+        word=check_valid_word(selected)
         same_position, same_letter = compare_words(word, secret)
         resultado=print_word(word, same_position, same_letter)
+        print(same_letter)
+        print(same_position)
         print(resultado)
         if word == secret:
             print("HAS GANADO!!")
             exit()
     print("LO SIENTO, NO LA HAS ADIVINIDADO. LA PALABRA ERA "+secret)   
+"""
 
