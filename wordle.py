@@ -1,4 +1,4 @@
-from random import random
+import random
 
 
 def choose_secret(nombre_fichero):
@@ -8,11 +8,19 @@ def choose_secret(nombre_fichero):
     Returns:
       secret: Palabra elegida aleatoriamente del fichero transformada a mayÃºsculas. Ej. "CREMA"
     """
+    lista = []
     f = open(nombre_fichero, mode="rt", encoding="utf-8")
-    for i in range(random.randint(0, 30)):
-      secret=f.readline()
-    return secret.capitalize()
-def compare_words():
+    linea = f.readline()
+    lista.append(linea)
+    while linea != "" :
+      linea = f.readline()
+      lista.append(linea)
+    f.close()
+    rand=random.randint(1,30)
+    secret=lista[rand]
+    
+    return secret.upper()
+def compare_words(p1, p2):
     """Dadas dos palabras en mayÃºsculas (word y secret), esta funciÃ³n calcula las posiciones de las letras de word que aparecen en la misma posiciÃ³n en secret, y las posiciones de las letras de word que aparecen en secret pero en una posiciÃ³n distinta.
     Args:
       word: Una palabra. Ej. "CAMPO"
@@ -21,7 +29,21 @@ def compare_words():
       same_position: Lista de posiciones de word cuyas letras coinciden en la misma posiciÃ³n en secret. En el caso anterior: [0]
       same_letter: Lista de posiciones de word cuyas letras estÃ¡n en secret pero en posiciones distintas. En el caso anterior: [1,2]
     """
-
+    listaP1=[]
+    listaP2=[]
+    same_position=[]
+    same_letter=[]
+    for char in p1:
+      listaP1.append(char)
+    for char in p2:
+      listaP2.append(char)
+    for i in range(len(listaP1)):
+      if(listaP1[i]==listaP2[i]):
+        same_position.append(i)
+      for j in range(len(listaP2)):
+        if(listaP1[i]==listaP2[j] and i not in same_letter and i!=j):
+          same_letter.append(i)
+    return same_position, same_letter
 def print_word():
     """Dada una palabra, una lista same_position y otra lista same_letter, esta funciÃ³n crearÃ¡ un string donde aparezcan en mayÃºsculas las letras de la palabra que ocupen las posiciones de same_position, en minÃºsculas las letras de la palabra que ocupen las posiciones de same_letter y un guiÃ³n (-) en el resto de posiciones
     Args:
@@ -63,4 +85,5 @@ if __name__ == "__main__":
             exit()
     print("LO SIENTO, NO LA HAS ADIVINIDADO. LA PALABRA ERA "+secret)   
 """
-secret=choose_secret("palabras_reduced.txt")
+
+compare_words("CAMPO","CREMA")
